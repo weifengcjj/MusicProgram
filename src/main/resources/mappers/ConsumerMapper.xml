@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weifeng.musicprogram.Dao.ConsumerMapper">
+    <resultMap id="wei1" type="com.weifeng.musicprogram.Model.Consumer">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+        <result property="sex" column="sex"></result>
+        <result property="phone_num" column="phone_num"></result>
+        <result property="email" column="email"></result>
+        <result property="birth" column="birth"></result>
+        <result property="introducation" column="introducation"></result>
+        <result property="location" column="location"></result>
+        <result property="avator" column="avator"></result>
+        <result property="create_time" column="create_time"></result>
+        <result property="update_time" column="update_time"></result>
+    </resultMap>
+    <sql id="base_list">
+        id,username,password,sex,phone_num,email,birth,introducation,location,avator,create_time,update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.weifeng.musicprogram.Model.Consumer">
+        insert into consumer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username!=null">
+                username,
+            </if><if test="password!=null">
+            password,
+            </if><if test="sex!=null">
+            sex,
+            </if>
+            <if test="phone_num!=null">
+            phone_num,
+            </if><if test="email!=null">
+            email,
+            </if><if test="birth!=null">
+            birth,
+            </if><if test="introducation!=null">
+            introducation,
+            </if>
+            <if test="location!=null">
+                location,
+            </if>
+            <if test="avator!=null">
+                avator,
+            </if>
+                create_time, update_time,
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="username!=null">
+                #{username},
+            </if><if test="password!=null">
+                #{password},
+            </if><if test="sex!=null">
+                #{sex},
+            </if><if test="phone_num!=null">
+                #{phone_num},
+            </if><if test="email!=null">
+               #{email},
+            </if><if test="birth!=null">
+                #{birth},
+            </if>
+            <if test="introducation!=null">
+                #{introducation},
+            </if>
+            <if test="location!=null">
+                #{location},
+            </if>
+            <if test="avator!=null">
+                #{avator},
+            </if>
+            now(),now(),
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.weifeng.musicprogram.Model.Consumer">
+        update consumer
+        <set>
+            <if test="id!=null">
+                id=#{id},
+            </if>
+            <if test="username!=null">
+                username = #{username},
+            </if><if test="password!=null">
+            password = #{password},
+            </if>
+            <if test="sex!=null">
+                sex = #{sex},
+            </if>
+            <if test="phone_num!=null">
+                phone_num = #{phone_num},
+            </if><if test="email!=null">
+            email= #{email},
+            </if><if test="birth!=null">
+            birth = #{birth},
+            </if>
+            <if test="introducation!=null">
+                introducation = #{introducation},
+            </if>
+            <if test="location!=null">
+                location = #{location},
+            </if>
+            <if test="avator!=null">
+                avator = #{avator},
+            </if>
+            update_time=now()
+        </set>
+        where id =#{id}
+    </update>
+
+    <delete id="remove" parameterType="java.lang.Integer">
+        delete from consumer
+        where id = #{id}
+    </delete>
+
+    <select id="selectById" resultMap="wei1" parameterType="java.lang.Integer">
+        select
+        <include refid="base_list" />
+        from consumer
+        where id=#{id}
+    </select>
+
+    <select id="allConsumer" resultMap="wei1">
+        select
+        <include refid="base_list" />
+        from consumer
+    </select>
+
+    <select id="updatePassword" resultType="java.lang.Integer">
+        select count(*)
+        from consumer
+        where username = #{username} and password=#{password}
+    </select>
+
+    <select id="consumerByName" resultMap="wei1" parameterType="java.lang.String">
+        select
+        <include refid="base_list" />
+        from consumer
+        where username like #{username}
+    </select>
+
+
+
+</mapper>

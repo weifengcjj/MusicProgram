@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weifeng.musicprogram.Dao.SongMapper">
+    <resultMap id="wei1" type="com.weifeng.musicprogram.Model.Song">
+        <id property="id" column="id"></id>
+        <result property="singerId" column="singer_id"></result>
+        <result property="name" column="name"></result>
+        <result property="introducation" column="introducation"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="pic" column="pic"></result>
+<!--        <result property="lyric" column="lyric"></result>-->
+        <result property="url" column="url"></result>
+    </resultMap>
+    <!-- todo 继承重复的内容，然后有自己独特的字段   -->
+    <resultMap id="wei2" type="com.weifeng.musicprogram.Model.Song" extends="wei1">
+        <result property="lyric" column="lyric"></result>
+    </resultMap>
+
+    <sql id="base_list">
+        id,singer_id,name,introducation,create_time,update_time,pic,url
+    </sql>
+    <sql id="blob_list">
+        id,singer_id,name,introducation,create_time,update_time,pic,lyric,url
+    </sql>
+
+    <insert id="insert" parameterType="com.weifeng.musicprogram.Model.Song">
+        insert into song
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="singerId!=null">
+                singer_id,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="introducation!=null">
+                introducation,
+            </if>
+                create_time,update_time,
+            <if test="pic!=null">
+                pic,
+            </if>
+            <if test="lyric!=null">
+                lyric,
+            </if>
+            <if test="url!=null">
+                url,
+            </if>
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="singerId!=null">
+                #{singerId},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="introducation!=null">
+                #{introducation},
+            </if>
+                now(),now(),
+            <if test="pic!=null">
+                #{pic},
+            </if>
+            <if test="lyric!=null">
+                #{lyric},
+            </if>
+            <if test="url!=null">
+                #{url},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.weifeng.musicprogram.Model.Song">
+        update song
+        <set>
+            <if test="singerId!=null">
+                singer_id=#{singerId},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="introducation!=null">
+                introducation=#{introducation},
+            </if>
+                update_time=now(),
+            <if test="pic!=null">
+                pic=#{pic},
+            </if>
+            <if test="lyric!=null">
+                lyric=#{lyric},
+            </if>
+            <if test="url!=null">
+                url=#{url},
+            </if>
+
+        </set>
+        where id =#{id}
+    </update>
+
+    <delete id="remove" parameterType="java.lang.Integer">
+        delete from song
+        where id = #{id}
+    </delete>
+
+    <select id="selectSongById" resultMap="wei2" parameterType="java.lang.Integer">
+        select
+        <include refid="blob_list" />
+        from song
+        where id=#{id}
+    </select>
+
+    <select id="allSong" resultMap="wei2">
+        select
+        <include refid="blob_list" />
+        from song
+    </select>
+
+    <select id="SongByName" resultMap="wei2" parameterType="java.lang.String">
+        select
+        <include refid="blob_list" />
+        from song
+        where name = #{name}
+    </select>
+
+    <select id="likeSongByName" resultMap="wei2" parameterType="java.lang.String">
+        select
+        <include refid="blob_list" />
+        from song
+        where name like #{name}
+    </select>
+    <select id="SongBySiger" resultMap="wei2" parameterType="java.lang.Integer">
+        select
+        <include refid="blob_list" />
+        from song
+        where singer_id = #{id}
+    </select>
+</mapper>
