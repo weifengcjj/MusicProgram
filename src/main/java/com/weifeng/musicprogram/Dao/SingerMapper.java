@@ -29,18 +29,23 @@ public interface SingerMapper {
      * 查找
      */
     /**
-     *  根据主键查
+     * 根据主键查
+     *
      * @param id
      * @return
      */
     Singer selectById(Integer id);
+
     /**
      * 查所有
+     *
      * @return
      */
     List<Singer> allSinger();
+
     /**
      * 模糊查询 ---姓名
+     *
      * @param name
      * @return
      */
@@ -48,6 +53,7 @@ public interface SingerMapper {
 
     /**
      * 根据性别
+     *
      * @param sex
      * @return
      */

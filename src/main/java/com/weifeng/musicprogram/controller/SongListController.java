@@ -46,130 +46,138 @@ public class SongListController {
 
     /**
      * 添加歌单
+     *
      * @param request
      * @return
      */
     @PostMapping("/add")
-    public Object addsinger(HttpServletRequest request){
-        JSONObject jsonObject=new JSONObject();
-        String title=request.getParameter("title").trim();
-        String pic=request.getParameter("pic").trim();
-        String introducation=request.getParameter("introducation").trim();
-        String style=request.getParameter("style").trim();
-        SongList songList=new SongList();
+    public Object addsinger(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        String title = request.getParameter("title").trim();
+        String pic = request.getParameter("pic").trim();
+        String introducation = request.getParameter("introducation").trim();
+        String style = request.getParameter("style").trim();
+        SongList songList = new SongList();
         songList.setTitle(title);
         songList.setPic(pic);
         songList.setIntroducation(introducation);
         songList.setStyle(style);
         boolean insert = songListService.insert(songList);
-        if(insert){
-            jsonObject.put(Consts.CODE,1);
-            jsonObject.put(Consts.MESSAGE,"添加成功");
+        if (insert) {
+            jsonObject.put(Consts.CODE, 1);
+            jsonObject.put(Consts.MESSAGE, "添加成功");
             return jsonObject;
         }
-        jsonObject.put(Consts.CODE,0);
-        jsonObject.put(Consts.MESSAGE,"添加失败");
+        jsonObject.put(Consts.CODE, 0);
+        jsonObject.put(Consts.MESSAGE, "添加失败");
         return jsonObject;
     }
 
     /**
      * 修改歌单
+     *
      * @param request
      * @return
      */
     @PostMapping("/update")
-    public Object updatesinger(HttpServletRequest request){
-        JSONObject jsonObject=new JSONObject();
-        String id=request.getParameter("id").trim();
-        String title=request.getParameter("title").trim();
-        String introducation=request.getParameter("introducation").trim();
-        String style=request.getParameter("style").trim();
-        SongList songList=new SongList();
+    public Object updatesinger(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id").trim();
+        String title = request.getParameter("title").trim();
+        String introducation = request.getParameter("introducation").trim();
+        String style = request.getParameter("style").trim();
+        SongList songList = new SongList();
         songList.setId(Integer.parseInt(id));
         songList.setTitle(title);
         songList.setIntroducation(introducation);
         songList.setStyle(style);
         boolean update = songListService.update(songList);
-        if(update){
-            jsonObject.put(Consts.CODE,1);
-            jsonObject.put(Consts.MESSAGE,"修改成功");
+        if (update) {
+            jsonObject.put(Consts.CODE, 1);
+            jsonObject.put(Consts.MESSAGE, "修改成功");
             return jsonObject;
         }
-        jsonObject.put(Consts.CODE,0);
-        jsonObject.put(Consts.MESSAGE,"修改失败");
+        jsonObject.put(Consts.CODE, 0);
+        jsonObject.put(Consts.MESSAGE, "修改失败");
         return jsonObject;
     }
 
     /**
      * 删除歌单
+     *
      * @param request
      * @return
      */
     @GetMapping("/delete/{id}")
-    public Object removesinger(HttpServletRequest request, @PathVariable("id") int id){
+    public Object removesinger(HttpServletRequest request, @PathVariable("id") int id) {
         boolean remove = songListService.remove(id);
         return remove;
     }
 
     /**
      * 查询一个歌单  id
+     *
      * @param request
      * @return
      */
     @GetMapping("/selectById/{id}")
-    public Object Onesinger(HttpServletRequest request,@PathVariable("id") int id){
+    public Object Onesinger(HttpServletRequest request, @PathVariable("id") int id) {
         return songListService.selectSongListById(id);
     }
 
     /**
      * 查所有歌单
+     *
      * @param request
      * @return
      */
     @GetMapping("/allSongList")
-    public Object allSinger(HttpServletRequest request){
+    public Object allSinger(HttpServletRequest request) {
         return songListService.allSongList();
     }
 
     /**
      * 根据标题精确查歌单
+     *
      * @param request
      * @param title
      * @return
      */
     @GetMapping("/songListByTitle/{title}")
-    public Object songListByTitle(HttpServletRequest request,@PathVariable("title") String title){
+    public Object songListByTitle(HttpServletRequest request, @PathVariable("title") String title) {
         return songListService.SongListByTitle(title);
     }
 
     /**
      * 根据标题模糊查歌单
+     *
      * @param request
      * @param title
      * @return
      */
     @GetMapping("/SongListLikeTitle/{title}")
-    public Object SongListLikeTitle(HttpServletRequest request,@PathVariable("title") String title){
-        return songListService.SongListLikeTitle("%"+title+"%");
+    public Object SongListLikeTitle(HttpServletRequest request, @PathVariable("title") String title) {
+        return songListService.SongListLikeTitle("%" + title + "%");
     }
 
     /**
      * 根据风格模糊查歌单
+     *
      * @param request
      * @param style
      * @return
      */
     @GetMapping("/SongListLikeStyle/{style}")
-    public Object SongListLikeStyle(HttpServletRequest request,@PathVariable("style") String style){
-        return songListService.SongListLikeStyle("%"+style+"%");
+    public Object SongListLikeStyle(HttpServletRequest request, @PathVariable("style") String style) {
+        return songListService.SongListLikeStyle("%" + style + "%");
     }
 
 
     //todo 更新歌单图片
     @PostMapping("/updateSongListPic")
-    public Object updateSongListPic(@RequestParam("file")MultipartFile file, @RequestParam("id")int id){
+    public Object updateSongListPic(@RequestParam("file") MultipartFile file, @RequestParam("id") int id) {
         JSONObject jsonObject = new JSONObject();
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MESSAGE, "上传失败");
             return jsonObject;
@@ -186,7 +194,7 @@ public class SongListController {
             return jsonObject;
         }
 
-        String resourcePath ="D:\\java\\MusicProgram\\src\\main\\resources\\static\\songlistPic\\";
+        String resourcePath = "D:\\java\\MusicProgram\\src\\main\\resources\\static\\songlistPic\\";
 //        System.out.println("resourcePath===="+resourcePath);//resourcePath
 
         System.out.println(resourceStaticPath);
@@ -206,15 +214,15 @@ public class SongListController {
             Files.copy(resourceDest.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
             System.out.println("文件复制成功！");
 
-            SongList songList=new SongList();
+            SongList songList = new SongList();
             songList.setId(id);
             songList.setPic(fileName);
             boolean update = songListService.update(songList);
-            if(update){
+            if (update) {
                 jsonObject.put(Consts.CODE, 1);
                 jsonObject.put(Consts.MESSAGE, "更新成功");
                 jsonObject.put("pic", fileName);
-            } else{
+            } else {
                 jsonObject.put(Consts.CODE, 0);
                 jsonObject.put(Consts.MESSAGE, "更新失败");
             }
